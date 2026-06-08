@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALPHA SIGNALS HUB — مؤشرات وتحليلات التداول</title>
+<meta name="description" content="ALPHA SIGNALS HUB — بوت تعليمي وتحليلي للتداول: إشارات آلية، تحليلات، دعوم ومقاومات، تقويم اقتصادي، أخبار، وأكاديمية. منتج برمجي تعليمي.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Reem+Kufi:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070b14;
+    --bg2:#0c1322;
+    --panel:#101a2e;
+    --panel-2:#0e1626;
+    --gold:#d4af37;
+    --gold-bright:#f5d878;
+    --cyan:#38d6c8;
+    --ink:#eef3fb;
+    --muted:#8ea0bd;
+    --line:rgba(255,255,255,.08);
+    --red:#ef4444;
+    --green:#22c55e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Tajawal',sans-serif;
+    line-height:1.75;
+    overflow-x:hidden;
+  }
+  .display{font-family:'Reem Kufi',sans-serif;}
+
+  /* atmospheric background */
+  .bg-fx{position:fixed;inset:0;z-index:-2;overflow:hidden}
+  .bg-fx::before{
+    content:"";position:absolute;inset:-20%;
+    background:
+      radial-gradient(60% 50% at 80% 0%, rgba(212,175,55,.16), transparent 60%),
+      radial-gradient(50% 50% at 10% 20%, rgba(56,214,200,.12), transparent 55%),
+      radial-gradient(70% 60% at 50% 110%, rgba(56,214,200,.08), transparent 60%);
+  }
+  .grid-overlay{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:54px 54px;mask-image:radial-gradient(circle at 50% 30%,#000 30%,transparent 80%);
+  }
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+    background:rgba(7,11,20,.72);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:'Reem Kufi';font-weight:700;font-size:1.15rem;letter-spacing:.5px}
+  .logo-mark{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+    background:linear-gradient(140deg,var(--gold),#9a7b1e);color:#0a0f1a;font-weight:900;font-family:'Tajawal'}
+  .nav-cta{font-family:'Tajawal';font-weight:700;font-size:.9rem;color:#0a0f1a;text-decoration:none;
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold));padding:9px 18px;border-radius:10px;transition:.25s}
+  .nav-cta:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(212,175,55,.3)}
+
+  /* hero */
+  header{padding:80px 0 60px;text-align:center;position:relative}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:.82rem;letter-spacing:1px;
+    color:var(--gold-bright);background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.28);
+    padding:7px 16px;border-radius:999px;margin-bottom:26px}
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  h1{font-family:'Reem Kufi';font-weight:700;font-size:clamp(2.4rem,7vw,4.4rem);line-height:1.12;
+    background:linear-gradient(180deg,#fff,#a9bcd9);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:18px}
+  h1 .accent{background:linear-gradient(120deg,var(--gold-bright),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{max-width:600px;margin:0 auto 34px;color:var(--muted);font-size:1.12rem}
+  .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{font-family:'Tajawal';font-weight:700;font-size:1rem;text-decoration:none;padding:14px 30px;border-radius:13px;transition:.28s;display:inline-flex;align-items:center;gap:9px}
+  .btn-primary{background:linear-gradient(135deg,var(--gold-bright),var(--gold));color:#0a0f1a}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(212,175,55,.34)}
+  .btn-ghost{background:rgba(255,255,255,.04);color:var(--ink);border:1px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+
+  /* section heading */
+  .sec{padding:62px 0}
+  .sec-head{text-align:center;margin-bottom:46px}
+  .sec-head h2{font-family:'Reem Kufi';font-weight:700;font-size:clamp(1.7rem,4vw,2.5rem);margin-bottom:10px}
+  .sec-head p{color:var(--muted)}
+  .rule{width:60px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--cyan));margin:14px auto 0}
+
+  /* features grid */
+  .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+  .card{background:linear-gradient(160deg,var(--panel),var(--panel-2));border:1px solid var(--line);
+    border-radius:18px;padding:26px;transition:.3s;position:relative;overflow:hidden}
+  .card::after{content:"";position:absolute;inset:0;border-radius:18px;padding:1px;
+    background:linear-gradient(140deg,rgba(212,175,55,.5),transparent 40%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:.3s}
+  .card:hover{transform:translateY(-6px);border-color:transparent}
+  .card:hover::after{opacity:1}
+  .card .ico{font-size:1.7rem;margin-bottom:14px;display:block}
+  .card h3{font-family:'Reem Kufi';font-weight:600;font-size:1.18rem;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.96rem}
+
+  /* pricing */
+  .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px;align-items:stretch}
+  .plan{background:linear-gradient(165deg,var(--panel),var(--panel-2));border:1px solid var(--line);
+    border-radius:20px;padding:30px 26px;display:flex;flex-direction:column;position:relative;transition:.3s}
+  .plan:hover{transform:translateY(-6px)}
+  .plan.feat{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 24px 50px rgba(212,175,55,.16)}
+  .plan .tag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-weight:700;font-size:.76rem;
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold));color:#0a0f1a;padding:5px 16px;border-radius:999px;white-space:nowrap}
+  .plan .pname{font-family:'Reem Kufi';font-weight:600;font-size:1.3rem;margin-bottom:4px}
+  .plan .pdur{color:var(--muted);font-size:.9rem;margin-bottom:18px}
+  .plan .price{font-family:'Reem Kufi';font-weight:700;font-size:2.5rem;line-height:1;margin-bottom:4px}
+  .plan .price span{font-size:1rem;color:var(--muted);font-family:'Tajawal'}
+  .plan .save{color:var(--green);font-weight:700;font-size:.86rem;margin-bottom:20px;min-height:20px}
+  .plan ul{list-style:none;margin-bottom:24px;flex:1}
+  .plan li{padding:7px 0;color:#cdd8ec;font-size:.95rem;display:flex;gap:9px;align-items:flex-start}
+  .plan li::before{content:"✓";color:var(--gold-bright);font-weight:900;flex-shrink:0}
+  .plan li.no{color:var(--muted)}
+  .plan li.no::before{content:"+";color:var(--cyan)}
+  .plan .pbtn{text-align:center;font-family:'Tajawal';font-weight:700;text-decoration:none;padding:13px;border-radius:12px;transition:.25s}
+  .plan .pbtn.solid{background:linear-gradient(135deg,var(--gold-bright),var(--gold));color:#0a0f1a}
+  .plan .pbtn.solid:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(212,175,55,.3)}
+  .plan .pbtn.line{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  .plan .pbtn.line:hover{border-color:var(--gold)}
+
+  .indicator-note{margin-top:26px;background:rgba(56,214,200,.06);border:1px solid rgba(56,214,200,.22);
+    border-radius:16px;padding:22px 24px}
+  .indicator-note h4{font-family:'Reem Kufi';color:var(--cyan);margin-bottom:8px;font-size:1.1rem}
+  .indicator-note p{color:#bcd; font-size:.95rem;margin:4px 0}
+
+  /* disclaimer */
+  .disc{background:linear-gradient(160deg,#160d0d,#1a1012);border:1px solid rgba(239,68,68,.28);border-radius:20px;padding:32px}
+  .disc h3{font-family:'Reem Kufi';color:#ffb4b4;font-size:1.2rem;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .disc ul{list-style:none}
+  .disc li{padding:8px 0;color:#e7c9c9;font-size:.95rem;display:flex;gap:10px;align-items:flex-start}
+  .disc li::before{content:"•";color:var(--red);font-weight:900}
+
+  /* contact */
+  .contact{text-align:center}
+  .socials{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+  .soc{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);font-weight:700;
+    background:var(--panel);border:1px solid var(--line);padding:12px 22px;border-radius:12px;transition:.25s}
+  .soc:hover{border-color:var(--gold);color:var(--gold-bright);transform:translateY(-2px)}
+
+  footer{border-top:1px solid var(--line);padding:34px 0;text-align:center;color:var(--muted);font-size:.88rem;margin-top:30px}
+  footer .brand{justify-content:center;margin-bottom:12px;font-size:1rem}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(26px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="bg-fx"></div>
+<div class="grid-overlay"></div>
+
+<nav>
+  <div class="wrap nav-in">
+    <div class="brand"><span class="logo-mark">α</span> ALPHA SIGNALS HUB</div>
+    <a class="nav-cta" href="#plans">الباقات</a>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span> بوت تعليمي وتحليلي · بث آلي ٢٤ ساعة</span>
+    <h1>تعلّم وحلّل أسواق <span class="accent">التداول</span><br>مع ALPHA SIGNALS</h1>
+    <p class="sub">منصة برمجية تعليمية على تيليجرام تقدّم إشارات آلية، تحليلات فنية، دعوم ومقاومات، تقويم اقتصادي وأخبار لحظية — كل شيء في مكان واحد.</p>
+    <div class="hero-btns">
+      <a class="btn btn-primary" href="#plans">🚀 اشترك الآن</a>
+      <a class="btn btn-ghost" href="https://t.me/ALPHA_SIGNALS7" target="_blank" rel="noopener">💬 تواصل معنا</a>
+    </div>
+  </div>
+</header>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>ما يقدّمه البوت</h2>
+      <p>أدوات تعليمية وتحليلية متكاملة تُنشر تلقائياً</p>
+      <div class="rule"></div>
+    </div>
+    <div class="features">
+      <div class="card reveal"><span class="ico">🔔</span><h3>الإشارات</h3><p>بث تلقائي ٢٤ ساعة يشمل الدخول الذهبي و Entry و SL وثلاثة أهداف.</p></div>
+      <div class="card reveal"><span class="ico">📊</span><h3>التحليلات</h3><p>تحليل فني لأي رمز أو فريم مع شارت كامل وواضح.</p></div>
+      <div class="card reveal"><span class="ico">☁️</span><h3>السحابة</h3><p>دعوم ومقاومات يومية تصلك كل صباح.</p></div>
+      <div class="card reveal"><span class="ico">📅</span><h3>التقويم الاقتصادي</h3><p>أحداث الدولار ونتائجها لحظياً أول بأول.</p></div>
+      <div class="card reveal"><span class="ico">📰</span><h3>الأخبار</h3><p>أهم أخبار الأسواق فور صدورها.</p></div>
+      <div class="card reveal"><span class="ico">📚</span><h3>الأكاديمية</h3><p>دروس تعليمية مختارة لبناء فهمك للتداول.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="plans">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>الباقات</h2>
+      <p>اختر الباقة المناسبة لك — كلها تشمل وصولاً كاملاً للتوبيكات</p>
+      <div class="rule"></div>
+    </div>
+    <div class="plans">
+      <div class="plan reveal">
+        <div class="pname">💎 الماسية</div>
+        <div class="pdur">اشتراك شهر واحد</div>
+        <div class="price">300 <span>درهم</span></div>
+        <div class="save"></div>
+        <ul>
+          <li>وصول كامل لكل التوبيكات</li>
+          <li>إشارات وتحليلات وأخبار</li>
+          <li>دعوم ومقاومات يومية</li>
+          <li class="no">مؤشر ALPHA SIGNALS اختياري +300 درهم</li>
+        </ul>
+        <a class="pbtn line" href="https://t.me/ALPHA_SIGNALS7" target="_blank" rel="noopener">اشترك</a>
+      </div>
+
+      <div class="plan reveal">
+        <div class="pname">🏆 الذهبية</div>
+        <div class="pdur">اشتراك شهرين</div>
+        <div class="price">500 <span>درهم</span></div>
+        <div class="save">توفير 100 درهم</div>
+        <ul>
+          <li>كل مزايا الماسية</li>
+          <li>تغطية لمدة شهرين كاملين</li>
+          <li>سعر أوفر للمدى الأطول</li>
+          <li class="no">مؤشر ALPHA SIGNALS اختياري +300 درهم</li>
+        </ul>
+        <a class="pbtn line" href="https://t.me/ALPHA_SIGNALS7" target="_blank" rel="noopener">اشترك</a>
+      </div>
+
+      <div class="plan feat reveal">
+        <span class="tag">🔥 الأفضل قيمة</span>
+        <div class="pname">⭐ البلاتينيوم</div>
+        <div class="pdur">اشتراك 3 شهور</div>
+        <div class="price">900 <span>درهم</span></div>
+        <div class="save">يشمل المؤشر مجاناً</div>
+        <ul>
+          <li>كل مزايا الباقات السابقة</li>
+          <li>تغطية 3 شهور كاملة</li>
+          <li>مؤشر ALPHA SIGNALS مدمج مجاناً</li>
+          <li>أفضل قيمة على الإطلاق</li>
+        </ul>
+        <a class="pbtn solid" href="https://t.me/ALPHA_SIGNALS7" target="_blank" rel="noopener">اشترك الآن</a>
+      </div>
+    </div>
+
+    <div class="indicator-note reveal">
+      <h4>✨ مؤشر ALPHA SIGNALS — متوفّر على TradingView</h4>
+      <p>⚠️ غير مدمج مع الباقتين الماسية والذهبية — يُضاف اختيارياً مقابل <strong>+300 درهم</strong>.</p>
+      <p>✅ مدمج <strong>مجاناً</strong> مع باقة البلاتينيوم فقط.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="disc reveal">
+      <h3>⚠️ إخلاء مسؤولية مهم</h3>
+      <ul>
+        <li>هذا بوت آلي بالكامل — كل الإشارات والتحليلات والأخبار تُنشر تلقائياً دون تدخل بشري لحظي.</li>
+        <li>المحتوى تعليمي ومعلوماتي فقط، وليس نصيحة استثمارية أو توصية شراء/بيع.</li>
+        <li>التداول يحمل مخاطر عالية، والقرار ومسؤوليته الكاملة عليك وحدك — أنت من يتحمل أرباحك وخسائرك.</li>
+        <li>التزم دائماً بوقف الخسارة وإدارة رأس المال.</li>
+        <li>باستخدامك البوت واشتراكك فيه، فأنت تقرّ بأنك مستخدم واعٍ وتفهم وتقبل هذه الشروط بالكامل.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sec contact">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>تواصل معنا</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="socials reveal">
+      <a class="soc" href="https://t.me/ALPHA_SIGNALS7" target="_blank" rel="noopener">💬 تيليجرام · @ALPHA_SIGNALS7</a>
+      <a class="soc" href="https://instagram.com/ALPHASIGNALSBOT" target="_blank" rel="noopener">📸 إنستقرام · @ALPHASIGNALSBOT</a>
+      <a class="soc" href="https://x.com/ALPHASIGNALSBOT" target="_blank" rel="noopener">✖️ X · @ALPHASIGNALSBOT</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand"><span class="logo-mark">α</span> ALPHA SIGNALS HUB</div>
+    <p>منتج برمجي تعليمي وتحليلي · ALPHA SIGNALS INFORMATION TECHNOLOGY CONSULTANCY</p>
+    <p>أبوظبي، الإمارات العربية المتحدة · رخصة رقم CN-6578595</p>
+    <p style="margin-top:10px">© 2026 ALPHA SIGNALS HUB — جميع الحقوق محفوظة</p>
+  </div>
+</footer>
+
+<script>
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%6*60)+'ms';io.observe(el)});
+</script>
+</body>
+</html>
