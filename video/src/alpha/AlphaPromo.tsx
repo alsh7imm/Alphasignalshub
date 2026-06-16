@@ -11,15 +11,15 @@ import { LiveSignal } from "./scenes/LiveSignal";
 import { Plans } from "./scenes/Plans";
 import { CTA } from "./scenes/CTA";
 
-// Scene lengths (frames @ 30fps).
+// Scene lengths (frames @ 30fps). Generous holds so every scene is readable.
 const D = {
-  hook: 60,
-  signalIntro: 78,
-  brand: 66,
-  features: 84,
-  live: 110,
-  plans: 78,
-  cta: 100,
+  hook: 90,
+  signalIntro: 126,
+  brand: 102,
+  features: 144,
+  live: 174,
+  plans: 138,
+  cta: 138,
 } as const;
 
 const T = 11; // crossfade length
