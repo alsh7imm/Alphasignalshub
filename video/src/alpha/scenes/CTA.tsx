@@ -1,48 +1,34 @@
 import React from "react";
 import {
   AbsoluteFill,
-  Easing,
-  interpolate,
   spring,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { colors, display, body, goldGradient } from "../theme";
-import { LogoMark } from "../LogoMark";
+import { colors, arabic, latin, goldGradient } from "../theme";
+import { GemLogo } from "../GemLogo";
+import { useRise } from "../SignalCard";
 
-const SOCIALS = [
-  "💬 تيليجرام · @ALPHA_SIGNALS7",
-  "📸 إنستقرام · @ALPHASIGNALSBOT",
-  "✖️ X · @ALPHASIGNALSBOT",
-];
-
-// Scene 4 — call to action with the Telegram handle and socials.
+// Scene 7 — call to action: bot handle + free public channel.
 export const CTA: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const logoScale = spring({
+  const gem = spring({
     frame,
     fps,
-    config: { damping: 14, stiffness: 120, mass: 0.8 },
+    config: { damping: 13, stiffness: 120, mass: 0.8 },
   });
+  const title = useRise(14);
+  const btn = spring({
+    frame: frame - 26,
+    fps,
+    config: { damping: 14, stiffness: 120, mass: 0.7 },
+  });
+  const free = useRise(48);
 
-  const titleOpacity = interpolate(frame, [10, 30], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const titleY = interpolate(frame, [10, 30], [40, 0], {
-    easing: Easing.bezier(0.16, 1, 0.3, 1),
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-
-  // Gentle pulse on the CTA button.
-  const pulse = 1 + Math.sin(frame / 8) * 0.025;
-  const btnOpacity = interpolate(frame, [26, 44], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  // Gentle breathing glow on the bot button.
+  const glow = 24 + Math.sin(frame / 7) * 10;
 
   return (
     <AbsoluteFill
@@ -54,81 +40,56 @@ export const CTA: React.FC = () => {
         padding: 90,
       }}
     >
-      <div style={{ transform: `scale(${logoScale})` }}>
-        <LogoMark size={130} />
+      <div style={{ transform: `scale(${gem})` }}>
+        <GemLogo size={150} />
       </div>
 
-      <h2
+      <div
         style={{
-          opacity: titleOpacity,
-          transform: `translateY(${titleY}px)`,
-          fontFamily: display,
-          fontWeight: 700,
-          fontSize: 80,
-          textAlign: "center",
-          margin: 0,
+          ...title,
+          fontFamily: arabic,
+          fontWeight: 900,
+          fontSize: 96,
           color: colors.ink,
-          lineHeight: 1.2,
         }}
       >
-        ابدأ رحلتك مع
-        <br />
-        <span
-          style={{
-            background: goldGradient,
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            color: "transparent",
-          }}
-        >
-          ALPHA SIGNALS
-        </span>
-      </h2>
-
-      <div
-        style={{
-          opacity: btnOpacity,
-          transform: `scale(${pulse})`,
-          fontFamily: body,
-          fontWeight: 700,
-          fontSize: 44,
-          color: "#0a0f1a",
-          background: goldGradient,
-          padding: "22px 60px",
-          borderRadius: 18,
-          boxShadow: "0 18px 44px rgba(212,175,55,.4)",
-        }}
-      >
-        🚀 اشترك الآن
+        اشترك <span style={{ color: colors.gold }}>الحين</span>
       </div>
 
       <div
         style={{
-          opacity: btnOpacity,
+          opacity: btn,
+          transform: `scale(${btn})`,
+          direction: "ltr",
+          fontFamily: latin,
+          fontWeight: 800,
+          fontSize: 60,
+          color: "#1a1407",
+          background: goldGradient,
+          padding: "26px 64px",
+          borderRadius: 999,
+          boxShadow: `0 0 ${glow}px rgba(224,180,58,.6)`,
+        }}
+      >
+        @AlphaSignalS7Bot
+      </div>
+
+      <div
+        style={{
+          ...free,
+          textAlign: "center",
           display: "flex",
           flexDirection: "column",
-          gap: 14,
-          alignItems: "center",
+          gap: 16,
           marginTop: 10,
         }}
       >
-        {SOCIALS.map((s) => (
-          <span
-            key={s}
-            style={{
-              fontFamily: body,
-              fontWeight: 700,
-              fontSize: 30,
-              color: colors.ink,
-              background: colors.panel,
-              border: `1px solid ${colors.line}`,
-              padding: "14px 30px",
-              borderRadius: 14,
-            }}
-          >
-            {s}
-          </span>
-        ))}
+        <span style={{ fontFamily: arabic, fontWeight: 700, fontSize: 42, color: colors.ink }}>
+          جرّب مجاناً في القناة العامة
+        </span>
+        <span style={{ direction: "ltr", fontFamily: latin, fontWeight: 800, fontSize: 46, color: colors.gold }}>
+          @AlphaSignalsHubFree
+        </span>
       </div>
     </AbsoluteFill>
   );

@@ -6,195 +6,118 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { colors, display, body, goldGradient } from "../theme";
+import { colors, arabic, latin } from "../theme";
+import { Heading } from "../Heading";
 
 type Plan = {
-  emoji: string;
   name: string;
-  dur: string;
   price: string;
-  save?: string;
+  per: string;
+  note?: string;
   featured?: boolean;
 };
 
 const PLANS: Plan[] = [
-  { emoji: "💎", name: "الماسية", dur: "شهر واحد", price: "300" },
-  {
-    emoji: "🏆",
-    name: "الذهبية",
-    dur: "شهرين",
-    price: "500",
-    save: "توفير 100 درهم",
-  },
-  {
-    emoji: "⭐",
-    name: "البلاتينيوم",
-    dur: "3 شهور",
-    price: "900",
-    save: "يشمل المؤشر مجاناً",
-    featured: true,
-  },
+  { name: "الماسية", price: "300", per: "درهم / شهر" },
+  { name: "الذهبية", price: "500", per: "درهم / شهرين", featured: true },
+  { name: "البلاتينيوم", price: "900", per: "درهم / ٣ شهور", note: "★ يشمل المؤشر" },
 ];
 
 const PlanRow: React.FC<{ plan: Plan; index: number }> = ({ plan, index }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const delay = 16 + index * 10;
-
   const enter = spring({
-    frame: frame - delay,
+    frame: frame - 16 - index * 8,
     fps,
     config: { damping: 18, stiffness: 110, mass: 0.7 },
   });
-  const x = interpolate(enter, [0, 1], [80, 0]);
+  const y = interpolate(enter, [0, 1], [50, 0]);
 
   return (
     <div
       style={{
         opacity: enter,
-        transform: `translateX(${x}px)`,
-        position: "relative",
-        background: `linear-gradient(165deg, ${colors.panel}, ${colors.panel2})`,
-        border: plan.featured
-          ? `2px solid ${colors.gold}`
-          : `1px solid ${colors.line}`,
-        boxShadow: plan.featured
-          ? "0 24px 60px rgba(212,175,55,.22)"
-          : "none",
-        borderRadius: 28,
-        padding: "30px 36px",
+        transform: `translateY(${y}px)`,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        gap: 20,
+        background: `linear-gradient(160deg, ${colors.panel}, ${colors.panel2})`,
+        border: plan.featured
+          ? `2px solid ${colors.gold}`
+          : `1px solid ${colors.line}`,
+        boxShadow: plan.featured ? "0 0 36px rgba(224,180,58,.28)" : "none",
+        borderRadius: 26,
+        padding: "32px 40px",
       }}
     >
-      {plan.featured && (
+      {/* Right: name + note */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
         <span
           style={{
-            position: "absolute",
-            top: -18,
-            right: 36,
-            fontFamily: body,
-            fontWeight: 700,
-            fontSize: 24,
-            background: goldGradient,
-            color: "#0a0f1a",
-            padding: "6px 20px",
-            borderRadius: 999,
+            fontFamily: arabic,
+            fontWeight: 900,
+            fontSize: 54,
+            color: colors.gold,
           }}
         >
-          🔥 الأفضل قيمة
+          💎 {plan.name}
         </span>
-      )}
-
-      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-        <span
-          style={{
-            fontFamily: display,
-            fontWeight: 700,
-            fontSize: 46,
-            color: colors.ink,
-          }}
-        >
-          {plan.emoji} {plan.name}
-        </span>
-        <span style={{ fontFamily: body, fontSize: 28, color: colors.muted }}>
-          اشتراك {plan.dur}
-        </span>
-        {plan.save && (
+        {plan.note && (
           <span
             style={{
-              fontFamily: body,
+              fontFamily: arabic,
               fontWeight: 700,
-              fontSize: 26,
+              fontSize: 30,
               color: colors.green,
             }}
           >
-            {plan.save}
+            {plan.note}
           </span>
         )}
       </div>
 
-      <div style={{ textAlign: "center", whiteSpace: "nowrap" }}>
-        <span
+      {/* Left: price */}
+      <div style={{ textAlign: "left" }}>
+        <div
           style={{
-            fontFamily: display,
-            fontWeight: 700,
-            fontSize: 72,
-            background: goldGradient,
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            color: "transparent",
+            fontFamily: latin,
+            fontWeight: 800,
+            fontSize: 76,
+            lineHeight: 1,
+            color: colors.ink,
           }}
         >
           {plan.price}
-        </span>
-        <span style={{ fontFamily: body, fontSize: 28, color: colors.muted }}>
-          {" "}
-          درهم
-        </span>
+        </div>
+        <div style={{ fontFamily: arabic, fontSize: 30, color: colors.muted }}>
+          {plan.per}
+        </div>
       </div>
     </div>
   );
 };
 
-// Scene 3 — the three subscription plans, sliding in from the side.
+// Scene 6 — subscription plans.
 export const Plans: React.FC = () => {
-  const frame = useCurrentFrame();
-  const headOpacity = interpolate(frame, [0, 16], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-
   return (
     <AbsoluteFill
       style={{
         direction: "rtl",
-        padding: "100px 70px",
+        flexDirection: "column",
         justifyContent: "center",
+        gap: 28,
+        padding: "100px 70px",
       }}
     >
-      <div style={{ opacity: headOpacity, textAlign: "center", marginBottom: 50 }}>
-        <h2
-          style={{
-            fontFamily: display,
-            fontWeight: 700,
-            fontSize: 72,
-            margin: 0,
-            color: colors.ink,
-          }}
-        >
-          الباقات
-        </h2>
-        <div
-          style={{
-            width: 90,
-            height: 5,
-            borderRadius: 3,
-            margin: "20px auto 0",
-            background: `linear-gradient(90deg, ${colors.gold}, ${colors.cyan})`,
-          }}
+      <div style={{ marginBottom: 28 }}>
+        <Heading
+          size={84}
+          parts={[{ text: "اختر " }, { text: "باقتك", gold: true }]}
         />
       </div>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-        {PLANS.map((p, i) => (
-          <PlanRow key={p.name} plan={p} index={i} />
-        ))}
-      </div>
-
-      <p
-        style={{
-          fontFamily: body,
-          fontSize: 26,
-          color: colors.cyan,
-          textAlign: "center",
-          marginTop: 40,
-        }}
-      >
-        ✨ مؤشر ALPHA SIGNALS متوفّر على TradingView
-      </p>
+      {PLANS.map((p, i) => (
+        <PlanRow key={p.name} plan={p} index={i} />
+      ))}
     </AbsoluteFill>
   );
 };

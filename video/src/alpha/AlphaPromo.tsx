@@ -3,51 +3,67 @@ import { AbsoluteFill } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { Background } from "./Background";
-import { Intro } from "./scenes/Intro";
-import { Services } from "./scenes/Services";
+import { Hook } from "./scenes/Hook";
+import { SignalIntro } from "./scenes/SignalIntro";
+import { BrandReveal } from "./scenes/BrandReveal";
+import { Features } from "./scenes/Features";
+import { LiveSignal } from "./scenes/LiveSignal";
 import { Plans } from "./scenes/Plans";
 import { CTA } from "./scenes/CTA";
 
-// Scene lengths (frames @ 30fps) and the crossfade length between them.
-export const SCENES = {
-  intro: 90,
-  services: 240,
-  plans: 240,
-  cta: 180,
-  transition: 18,
+// Scene lengths (frames @ 30fps).
+const D = {
+  hook: 60,
+  signalIntro: 78,
+  brand: 66,
+  features: 84,
+  live: 110,
+  plans: 78,
+  cta: 100,
 } as const;
 
-// Total timeline = sum of scenes minus the overlap of each transition.
-export const TOTAL_DURATION =
-  SCENES.intro +
-  SCENES.services +
-  SCENES.plans +
-  SCENES.cta -
-  3 * SCENES.transition;
+const T = 11; // crossfade length
+const SCENES = Object.values(D);
 
-const timing = linearTiming({ durationInFrames: SCENES.transition });
+// Total = sum of scenes minus the overlap of each transition.
+export const TOTAL_DURATION =
+  SCENES.reduce((a, b) => a + b, 0) - (SCENES.length - 1) * T;
+
+const timing = linearTiming({ durationInFrames: T });
+const cut = () => (
+  <TransitionSeries.Transition presentation={fade()} timing={timing} />
+);
 
 export const AlphaPromo: React.FC = () => {
   return (
     <AbsoluteFill>
       <Background />
       <TransitionSeries>
-        <TransitionSeries.Sequence durationInFrames={SCENES.intro}>
-          <Intro />
+        <TransitionSeries.Sequence durationInFrames={D.hook}>
+          <Hook />
         </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={fade()} timing={timing} />
-
-        <TransitionSeries.Sequence durationInFrames={SCENES.services}>
-          <Services />
+        {cut()}
+        <TransitionSeries.Sequence durationInFrames={D.signalIntro}>
+          <SignalIntro />
         </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={fade()} timing={timing} />
-
-        <TransitionSeries.Sequence durationInFrames={SCENES.plans}>
+        {cut()}
+        <TransitionSeries.Sequence durationInFrames={D.brand}>
+          <BrandReveal />
+        </TransitionSeries.Sequence>
+        {cut()}
+        <TransitionSeries.Sequence durationInFrames={D.features}>
+          <Features />
+        </TransitionSeries.Sequence>
+        {cut()}
+        <TransitionSeries.Sequence durationInFrames={D.live}>
+          <LiveSignal />
+        </TransitionSeries.Sequence>
+        {cut()}
+        <TransitionSeries.Sequence durationInFrames={D.plans}>
           <Plans />
         </TransitionSeries.Sequence>
-        <TransitionSeries.Transition presentation={fade()} timing={timing} />
-
-        <TransitionSeries.Sequence durationInFrames={SCENES.cta}>
+        {cut()}
+        <TransitionSeries.Sequence durationInFrames={D.cta}>
           <CTA />
         </TransitionSeries.Sequence>
       </TransitionSeries>
