@@ -3,15 +3,16 @@
 
 export const T = 11; // crossfade length between scenes
 
-// Longer holds so each scene is comfortably readable.
+// Balanced holds — readable but not draggy.
 export const D = {
-  hook: 120,
-  signalIntro: 180,
-  brand: 150,
-  features: 240,
-  live: 270,
-  plans: 210,
-  cta: 195,
+  hook: 84,
+  signalIntro: 108,
+  brand: 96,
+  features: 168,
+  live: 126,
+  tradeChart: 240,
+  plans: 150,
+  cta: 156,
 } as const;
 
 export const ORDER = [
@@ -20,6 +21,7 @@ export const ORDER = [
   "brand",
   "features",
   "live",
+  "tradeChart",
   "plans",
   "cta",
 ] as const;

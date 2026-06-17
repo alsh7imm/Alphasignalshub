@@ -6,9 +6,11 @@ import {
   useVideoConfig,
 } from "remotion";
 import { LightLeak } from "@remotion/light-leaks";
+import { Sequence } from "remotion";
 import { colors, arabic, latin, goldGradient } from "../theme";
 import { GemLogo } from "../GemLogo";
 import { useRise } from "../SignalCard";
+import { LottieAsset } from "../LottieAsset";
 
 // Scene 7 — call to action: bot handle + free public channel.
 export const CTA: React.FC = () => {
@@ -92,6 +94,20 @@ export const CTA: React.FC = () => {
           @AlphaSignalsHubFree
         </span>
       </div>
+
+      {/* Trophy celebration at the top */}
+      <Sequence from={10}>
+        <AbsoluteFill
+          style={{
+            pointerEvents: "none",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            paddingTop: 150,
+          }}
+        >
+          <LottieAsset src="lottie/trophy.json" style={{ width: 360, height: 260 }} loop />
+        </AbsoluteFill>
+      </Sequence>
 
       <AbsoluteFill style={{ opacity: 0.26, mixBlendMode: "screen" }}>
         <LightLeak durationInFrames={36} seed={6} />

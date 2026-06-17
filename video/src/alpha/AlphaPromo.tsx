@@ -9,6 +9,7 @@ import { SignalIntro } from "./scenes/SignalIntro";
 import { BrandReveal } from "./scenes/BrandReveal";
 import { Features } from "./scenes/Features";
 import { LiveSignal } from "./scenes/LiveSignal";
+import { TradeChart } from "./scenes/TradeChart";
 import { Plans } from "./scenes/Plans";
 import { CTA } from "./scenes/CTA";
 import { D, T, TOTAL_DURATION } from "./timeline";
@@ -44,6 +45,10 @@ export const AlphaPromo: React.FC = () => {
         {cut()}
         <TransitionSeries.Sequence durationInFrames={D.live}>
           <LiveSignal />
+        </TransitionSeries.Sequence>
+        {cut()}
+        <TransitionSeries.Sequence durationInFrames={D.tradeChart}>
+          <TradeChart />
         </TransitionSeries.Sequence>
         {cut()}
         <TransitionSeries.Sequence durationInFrames={D.plans}>
