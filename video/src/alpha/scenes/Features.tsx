@@ -88,8 +88,8 @@ export const Features: React.FC = () => {
     >
       <div style={{ marginBottom: 24 }}>
         <Heading
-          size={84}
-          parts={[{ text: "وش " }, { text: "تحصل عليه؟", gold: true }]}
+          size={80}
+          parts={[{ text: "شو اللي " }, { text: "بتحصل عليه", gold: true }]}
         />
       </div>
       {FEATURES.map((t, i) => (
