@@ -1,27 +1,32 @@
 import React from "react";
 import { Audio } from "@remotion/media";
 import { interpolate, Sequence, staticFile } from "remotion";
+import { ORDER, STARTS, TOTAL_DURATION } from "./timeline";
 
-// Background music + sound-effect cues, timed to the scene beats.
-// All assets are CC0 (FreePD music, Kenney SFX).
+// Background music + sound-effect cues, derived from the timeline so they stay
+// in sync if scene lengths change. All assets are CC0 (FreePD music, Kenney SFX).
 
 type Cue = { at: number; src: string; volume: number };
 
 const CUES: Cue[] = [
-  { at: 2, src: "audio/pop.ogg", volume: 0.4 }, // opening
-  { at: 79, src: "audio/pop.ogg", volume: 0.4 }, // -> signal
-  { at: 87, src: "audio/card.ogg", volume: 0.5 }, // card appears
-  { at: 194, src: "audio/pop.ogg", volume: 0.42 }, // -> brand
-  { at: 285, src: "audio/pop.ogg", volume: 0.4 }, // -> features
-  { at: 418, src: "audio/pop.ogg", volume: 0.42 }, // -> live signal
-  { at: 426, src: "audio/card.ogg", volume: 0.5 }, // live card
-  { at: 452, src: "audio/success.ogg", volume: 0.6 }, // target hit
-  { at: 581, src: "audio/pop.ogg", volume: 0.4 }, // -> plans
-  { at: 708, src: "audio/pop.ogg", volume: 0.42 }, // -> CTA
-  { at: 734, src: "audio/coin.ogg", volume: 0.6 }, // subscribe
+  // A soft click as each scene opens.
+  ...ORDER.map((k, i) => ({
+    at: Math.max(STARTS[k], 2),
+    src: "audio/pop.ogg",
+    volume: i === 0 ? 0.38 : 0.4,
+  })),
+  // Card "whoosh in" when a signal card appears (card starts at scene+8).
+  { at: STARTS.signalIntro + 8, src: "audio/card.ogg", volume: 0.5 },
+  { at: STARTS.live + 8, src: "audio/card.ogg", volume: 0.5 },
+  // Success chime when the first target is hit (badge pops at scene+34).
+  { at: STARTS.live + 34, src: "audio/success.ogg", volume: 0.6 },
+  // Positive cue when the subscribe button pops (button pops at scene+26).
+  { at: STARTS.cta + 26, src: "audio/coin.ogg", volume: 0.6 },
 ];
 
-export const AudioLayer: React.FC<{ total: number }> = ({ total }) => {
+export const AudioLayer: React.FC<{ total?: number }> = ({
+  total = TOTAL_DURATION,
+}) => {
   return (
     <>
       <Audio

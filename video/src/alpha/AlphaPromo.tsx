@@ -11,24 +11,9 @@ import { Features } from "./scenes/Features";
 import { LiveSignal } from "./scenes/LiveSignal";
 import { Plans } from "./scenes/Plans";
 import { CTA } from "./scenes/CTA";
+import { D, T, TOTAL_DURATION } from "./timeline";
 
-// Scene lengths (frames @ 30fps). Generous holds so every scene is readable.
-const D = {
-  hook: 90,
-  signalIntro: 126,
-  brand: 102,
-  features: 144,
-  live: 174,
-  plans: 138,
-  cta: 138,
-} as const;
-
-const T = 11; // crossfade length
-const SCENES = Object.values(D);
-
-// Total = sum of scenes minus the overlap of each transition.
-export const TOTAL_DURATION =
-  SCENES.reduce((a, b) => a + b, 0) - (SCENES.length - 1) * T;
+export { TOTAL_DURATION };
 
 const timing = linearTiming({ durationInFrames: T });
 const cut = () => (
