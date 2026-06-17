@@ -8,16 +8,16 @@ import { interpolate, Sequence, staticFile } from "remotion";
 type Cue = { at: number; src: string; volume: number };
 
 const CUES: Cue[] = [
-  { at: 2, src: "audio/whoosh.ogg", volume: 0.3 }, // opening
-  { at: 79, src: "audio/whoosh.ogg", volume: 0.3 }, // -> signal
+  { at: 2, src: "audio/pop.ogg", volume: 0.4 }, // opening
+  { at: 79, src: "audio/pop.ogg", volume: 0.4 }, // -> signal
   { at: 87, src: "audio/card.ogg", volume: 0.5 }, // card appears
-  { at: 194, src: "audio/whoosh.ogg", volume: 0.32 }, // -> brand
-  { at: 285, src: "audio/whoosh.ogg", volume: 0.3 }, // -> features
-  { at: 418, src: "audio/whoosh.ogg", volume: 0.32 }, // -> live signal
+  { at: 194, src: "audio/pop.ogg", volume: 0.42 }, // -> brand
+  { at: 285, src: "audio/pop.ogg", volume: 0.4 }, // -> features
+  { at: 418, src: "audio/pop.ogg", volume: 0.42 }, // -> live signal
   { at: 426, src: "audio/card.ogg", volume: 0.5 }, // live card
   { at: 452, src: "audio/success.ogg", volume: 0.6 }, // target hit
-  { at: 581, src: "audio/whoosh.ogg", volume: 0.3 }, // -> plans
-  { at: 708, src: "audio/whoosh.ogg", volume: 0.32 }, // -> CTA
+  { at: 581, src: "audio/pop.ogg", volume: 0.4 }, // -> plans
+  { at: 708, src: "audio/pop.ogg", volume: 0.42 }, // -> CTA
   { at: 734, src: "audio/coin.ogg", volume: 0.6 }, // subscribe
 ];
 
