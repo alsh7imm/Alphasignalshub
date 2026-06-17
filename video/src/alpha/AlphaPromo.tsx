@@ -3,6 +3,7 @@ import { AbsoluteFill } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { Background } from "./Background";
+import { AudioLayer } from "./AudioLayer";
 import { Hook } from "./scenes/Hook";
 import { SignalIntro } from "./scenes/SignalIntro";
 import { BrandReveal } from "./scenes/BrandReveal";
@@ -38,6 +39,7 @@ export const AlphaPromo: React.FC = () => {
   return (
     <AbsoluteFill>
       <Background />
+      <AudioLayer total={TOTAL_DURATION} />
       <TransitionSeries>
         <TransitionSeries.Sequence durationInFrames={D.hook}>
           <Hook />

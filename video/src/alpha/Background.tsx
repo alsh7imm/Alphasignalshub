@@ -65,7 +65,44 @@ const Candles: React.FC = () => {
   );
 };
 
-// Full background: deep navy gradient + soft glows + candlestick chart.
+// Slow-drifting gold sparkles that twinkle as they rise.
+const SPARKS = Array.from({ length: 22 }, (_, i) => ({
+  x: (i * 97) % 100,
+  y: (i * 53) % 100,
+  size: 2 + ((i * 13) % 4),
+  speed: 14 + ((i * 7) % 22),
+  phase: (i * 41) % 100,
+}));
+
+const Sparkles: React.FC = () => {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{ pointerEvents: "none" }}>
+      {SPARKS.map((s, i) => {
+        const y = (s.y - (frame / s.speed) * 6 + 200) % 110;
+        const twinkle = 0.25 + 0.55 * (0.5 + 0.5 * Math.sin((frame + s.phase) / 9));
+        return (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: `${s.x}%`,
+              top: `${y}%`,
+              width: s.size,
+              height: s.size,
+              borderRadius: "50%",
+              background: colors.goldBright,
+              opacity: twinkle * 0.5,
+              boxShadow: `0 0 ${s.size * 3}px ${colors.gold}`,
+            }}
+          />
+        );
+      })}
+    </AbsoluteFill>
+  );
+};
+
+// Full background: deep navy gradient + soft glows + candlestick chart + sparkles.
 export const Background: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: colors.bgDeep, overflow: "hidden" }}>
@@ -98,6 +135,14 @@ export const Background: React.FC = () => {
         }}
       />
       <Candles />
+      <Sparkles />
+      {/* Vignette */}
+      <AbsoluteFill
+        style={{
+          background:
+            "radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%)",
+        }}
+      />
     </AbsoluteFill>
   );
 };

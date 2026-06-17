@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill } from "remotion";
 import { colors, arabic } from "../theme";
 import { useRise } from "../SignalCard";
+import { ShimmerText } from "../ShimmerText";
 
 // Scene 1 — the hook: eyebrow + bold two-line claim.
 export const Hook: React.FC = () => {
@@ -42,7 +43,7 @@ export const Hook: React.FC = () => {
           color: colors.ink,
         }}
       >
-        تداول <span style={{ color: colors.gold }}>بإشارة</span>
+        تداول <ShimmerText>بإشارة</ShimmerText>
       </div>
       <div
         style={{

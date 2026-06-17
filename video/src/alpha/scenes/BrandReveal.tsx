@@ -5,9 +5,11 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { LightLeak } from "@remotion/light-leaks";
 import { colors, arabic, latin } from "../theme";
 import { GemLogo } from "../GemLogo";
 import { useRise } from "../SignalCard";
+import { ShimmerText } from "../ShimmerText";
 
 // Scene 3 — brand reveal: gem logo + ALPHA SIGNALS wordmark + tagline.
 export const BrandReveal: React.FC = () => {
@@ -45,11 +47,10 @@ export const BrandReveal: React.FC = () => {
           letterSpacing: 3,
           whiteSpace: "nowrap",
           textAlign: "center",
-          color: colors.gold,
-          textShadow: "0 0 34px rgba(224,180,58,.45)",
+          filter: "drop-shadow(0 0 34px rgba(224,180,58,.45))",
         }}
       >
-        ALPHA SIGNALS
+        <ShimmerText period={56}>ALPHA SIGNALS</ShimmerText>
       </div>
 
       <div
@@ -64,6 +65,10 @@ export const BrandReveal: React.FC = () => {
       >
         إشاراتك للأسواق العالمية
       </div>
+
+      <AbsoluteFill style={{ opacity: 0.28, mixBlendMode: "screen" }}>
+        <LightLeak durationInFrames={34} seed={3} />
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };

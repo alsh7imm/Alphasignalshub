@@ -5,6 +5,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { LightLeak } from "@remotion/light-leaks";
 import { colors, arabic, latin, goldGradient } from "../theme";
 import { GemLogo } from "../GemLogo";
 import { useRise } from "../SignalCard";
@@ -91,6 +92,10 @@ export const CTA: React.FC = () => {
           @AlphaSignalsHubFree
         </span>
       </div>
+
+      <AbsoluteFill style={{ opacity: 0.26, mixBlendMode: "screen" }}>
+        <LightLeak durationInFrames={36} seed={6} />
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };
